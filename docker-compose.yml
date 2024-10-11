@@ -1,0 +1,48 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  receiver-service:
+    build:
+      context: ../receiver_service # Assuming you're in the project root
+    container_name: receiver_service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network
+  listener-service:
+    build:
+      context: . # Adjust based on your folder structure
+    container_name: listener_service
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network

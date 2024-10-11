@@ -7,7 +7,9 @@
     "start": "nodemon app.js",
     "start:dev": "set NODE_ENV=development&& nodemon app.js",
     "start:prod": "set NODE_ENV=production&& nodemon app.js",
-    "genrate:doc": "node ./src/v1/utils/swagger/swagger.js"
+    "genrate:doc": "node ./src/v1/utils/swagger/swagger.js",
+    "up": "docker-compose up --build",
+    "down": "docker-compose down"
   },
   "author": "Ayush Tiwari",
   "license": "ISC",
